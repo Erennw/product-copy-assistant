@@ -38,13 +38,13 @@ Two design ideas carry the architecture. First, **per-role tone examples**: each
 
 - **No conversation history between products.** Each product is an independent generation (analyzer pattern, not a chat). Descriptions never leak features from previous products, and the context stays minimal. The only exception is intentional: the feedback-retry loop keeps history *within* a single product's correction turns.
 - **Claude Haiku as the model.** Product copy is a short, well-constrained generation task — exactly the cost/latency profile Haiku is built for. The strictness lives in the prompt and the code-side validation, not in model size.
-- **Word band tuned for Turkish.** Turkish is agglutinative: the same content lands in fewer, longer words than English. The 60–90 band (and the retry loop's "expand" feedback) accounts for Turkish outputs naturally sitting lower in the range.
+- **Word band tuned for Turkish.** Turkish is agglutinative: the same content lands in fewer, longer words than English. The 60–90 band was set with English in mind, and Turkish outputs consistently landed below it on the first attempt while English outputs hit the band directly — the retry loop's "expand" feedback absorbs this difference.
 - **Known limitation: example parroting.** The assistant must not be evaluated with products that appear in its own few-shot examples (thermos, ceramic mug) — the model reproduces example phrasing instead of generating fresh copy. All acceptance tests use out-of-example products.
 
 ## Setup
 
 ```bash
-git clone https://github.com/<your-username>/product-copy-assistant.git
+git clone https://github.com/Erennw/product-copy-assistant.git
 cd product-copy-assistant
 python -m venv venv
 venv\Scripts\activate        # Windows  (macOS/Linux: source venv/bin/activate)
@@ -64,8 +64,8 @@ python assistant.py
 ```
 
 ```
-Product name: BoomGo speaker
-Features (comma-separated): 10 hour battery, waterproof, compact design
+Product name: BoomGo Bluetooth Speaker
+Features (comma-separated): 10-hour battery life, water resistant, dual phone connection
 Choose a tone [1] Professional [2] Casual/Young: 2
 ```
 
